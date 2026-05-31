@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DREKO — Available Rentals | Brand New Garden Suite in Innisfil</title>
+<meta name="description" content="Brand new 2-bedroom detached garden suite for rent in Innisfil. 700 sq ft, utilities included, private yard, 2 parking spaces. Professionally managed by Dreko.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --deep-green: #1a3a35; --green-mid: #24524b; --green-light: #2d6b62;
+    --cream: #e8d5c4; --cream-soft: #f2e8de; --cream-white: #faf5f0;
+    --warm-gray: #8a7e74; --accent: #c9a87c; --text-dark: #0f1f1c;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body {
+    font-family: 'Outfit', sans-serif; font-weight: 300; color: var(--cream);
+    background: var(--deep-green); overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 256px 256px; pointer-events: none; z-index: 9999;
+  }
+  .reveal {
+    opacity: 1; transform: translateY(0);
+    transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+  }
+  .reveal-enabled .reveal { opacity: 0; transform: translateY(40px); }
+  .reveal-enabled .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.12s; }
+  .reveal-delay-2 { transition-delay: 0.24s; }
+  .reveal-delay-3 { transition-delay: 0.36s; }
+  .reveal-delay-4 { transition-delay: 0.48s; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+    padding: 1.5rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: background 0.4s, padding 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(26,58,53,0.95); backdrop-filter: blur(24px);
+    padding: 1rem 4rem; box-shadow: 0 1px 0 rgba(232,213,196,0.06);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 0.8rem; text-decoration: none; }
+  .nav-logo svg { height: 38px; width: auto; transition: height 0.4s; }
+  nav.scrolled .nav-logo svg { height: 32px; }
+  .nav-logo-text { font-weight: 600; font-size: 1.4rem; letter-spacing: 0.25em; color: var(--cream); }
+  .nav-logo-text span { font-weight: 300; opacity: 0.6; font-size: 0.7rem; letter-spacing: 0.3em; display: block; margin-top: 2px; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--cream); text-decoration: none; font-size: 0.82rem;
+    letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.7;
+    font-weight: 400; position: relative; transition: opacity 0.3s;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0; width: 0;
+    height: 1px; background: var(--accent);
+    transition: width 0.4s cubic-bezier(0.16,1,0.3,1);
+  }
+  .nav-links a:hover { opacity: 1; }
+  .nav-links a:hover::after { width: 100%; }
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px; cursor: pointer;
+    padding: 8px; z-index: 1001; background: none; border: none;
+  }
+  .hamburger span { display: block; width: 24px; height: 1.5px; background: var(--cream); transition: transform 0.3s, opacity 0.3s; }
+  .hamburger.active span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .hamburger.active span:nth-child(2) { opacity: 0; }
+  .hamburger.active span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+  .mobile-menu {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(26,58,53,0.98); backdrop-filter: blur(30px); z-index: 999;
+    flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .mobile-menu.open { display: flex; opacity: 1; }
+  .mobile-menu a {
+    color: var(--cream); text-decoration: none; font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; font-weight: 300; letter-spacing: 0.1em; opacity: 0.8;
+    transition: opacity 0.3s, color 0.3s;
+  }
+  .mobile-menu a:hover { opacity: 1; color: var(--accent); }
+
+  /* PAGE HEADER */
+  .page-header { padding: 9rem 4rem 2rem; position: relative; }
+  .breadcrumb {
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    opacity: 0.35; margin-bottom: 1.5rem; font-weight: 400;
+  }
+  .breadcrumb a { color: var(--cream); text-decoration: none; transition: opacity 0.3s; }
+  .breadcrumb a:hover { opacity: 0.8; }
+
+  .listing-status-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(111, 191, 115, 0.12);
+    border: 1px solid rgba(111, 191, 115, 0.3);
+    color: #6fbf73;
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+  }
+  .listing-status-badge .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #6fbf73;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .listing-title {
+    font-family: 'Cormorant Garamond', serif; font-weight: 300;
+    font-size: clamp(2.5rem, 5vw, 4.2rem); line-height: 1.05; letter-spacing: -0.01em;
+    max-width: 1000px;
+  }
+  .listing-title em { font-style: italic; color: var(--accent); }
+  .listing-meta {
+    margin-top: 1.2rem;
+    display: flex; flex-wrap: wrap; gap: 2rem; align-items: center;
+    font-size: 0.95rem; opacity: 0.6;
+  }
+  .listing-meta-item { display: flex; align-items: center; gap: 0.5rem; }
+  .listing-meta svg { width: 16px; height: 16px; stroke: var(--accent); fill: none; stroke-width: 1.5; }
+
+  /* HERO GALLERY */
+  .gallery-section { padding: 2rem 4rem 0; }
+  .gallery {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0.6rem;
+    height: 580px;
+  }
+  .gallery-item {
+    overflow: hidden; cursor: pointer; position: relative;
+    background: var(--green-mid);
+  }
+  .gallery-item img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
+  }
+  .gallery-item:hover img { transform: scale(1.04); }
+  .gallery-item-1 { grid-row: span 2; grid-column: 1; }
+  .gallery-item-2 { grid-column: 2; grid-row: 1; }
+  .gallery-item-3 { grid-column: 3; grid-row: 1; }
+  .gallery-item-4 { grid-column: 2; grid-row: 2; }
+  .gallery-item-5 { grid-column: 3; grid-row: 2; }
+  .gallery-more {
+    position: absolute; inset: 0;
+    background: rgba(26, 58, 53, 0.7);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 0.3rem;
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; font-weight: 400;
+    pointer-events: none;
+  }
+  .gallery-more span:last-child {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  /* LIGHTBOX */
+  .lightbox {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(15, 31, 28, 0.96);
+    backdrop-filter: blur(20px);
+    z-index: 9998;
+    align-items: center; justify-content: center;
+    padding: 4rem 2rem;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox-content { max-width: 90vw; max-height: 90vh; position: relative; }
+  .lightbox-content img {
+    max-width: 100%; max-height: 90vh;
+    object-fit: contain; display: block;
+  }
+  .lightbox-close, .lightbox-prev, .lightbox-next {
+    position: fixed;
+    background: rgba(232,213,196,0.1);
+    border: 1px solid rgba(232,213,196,0.2);
+    color: var(--cream);
+    width: 48px; height: 48px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .lightbox-close:hover, .lightbox-prev:hover, .lightbox-next:hover {
+    background: rgba(232,213,196,0.18);
+    border-color: rgba(201,168,124,0.4);
+  }
+  .lightbox-close { top: 2rem; right: 2rem; }
+  .lightbox-prev { left: 2rem; top: 50%; transform: translateY(-50%); }
+  .lightbox-next { right: 2rem; top: 50%; transform: translateY(-50%); }
+  .lightbox-counter {
+    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    color: var(--cream); font-size: 0.85rem; letter-spacing: 0.1em; opacity: 0.6;
+  }
+
+  /* MAIN CONTENT GRID */
+  .listing-detail {
+    padding: 5rem 4rem 4rem;
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 5rem; align-items: start;
+  }
+  .listing-section { margin-bottom: 3.5rem; }
+  .listing-section:last-child { margin-bottom: 0; }
+  .section-eyebrow {
+    font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+    opacity: 0.4; margin-bottom: 1rem; font-weight: 400;
+  }
+  .listing-h2 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 400;
+    font-size: 1.8rem; line-height: 1.25; margin-bottom: 1.5rem;
+  }
+  .listing-h2 em { font-style: italic; color: var(--accent); }
+  .lead-copy {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 300; line-height: 1.55;
+    color: var(--cream); opacity: 0.85; font-style: italic;
+    padding-left: 1.5rem;
+    border-left: 2px solid var(--accent);
+    margin-bottom: 2.5rem;
+  }
+  .body-copy p { font-size: 1rem; line-height: 1.85; opacity: 0.65; margin-bottom: 1.3rem; }
+  .body-copy p strong { color: var(--accent); font-weight: 400; opacity: 0.95; }
+
+  /* AMENITIES GRID */
+  .amenities-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  .amenity {
+    display: flex; align-items: flex-start; gap: 0.9rem;
+    padding: 1.1rem 1.2rem;
+    border: 1px solid rgba(232,213,196,0.08);
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .amenity:hover {
+    border-color: rgba(201,168,124,0.25);
+    background: rgba(232,213,196,0.02);
+  }
+  .amenity svg {
+    width: 18px; height: 18px;
+    stroke: var(--accent); fill: none; stroke-width: 1.5;
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .amenity-text strong {
+    display: block;
+    font-family: 'Outfit', sans-serif; font-weight: 500;
+    font-size: 0.88rem; letter-spacing: 0.02em; margin-bottom: 0.15rem;
+  }
+  .amenity-text span { font-size: 0.78rem; opacity: 0.5; line-height: 1.5; }
+
+  /* PRICE CARD */
+  .price-card {
+    position: sticky; top: 7rem;
+    padding: 2.2rem;
+    border: 1px solid rgba(232,213,196,0.12);
+    background: rgba(232,213,196,0.02);
+  }
+  .price-card-rent {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--accent); line-height: 1; margin-bottom: 0.4rem;
+  }
+  .price-card-rent .price { font-size: 3rem; font-weight: 400; }
+  .price-card-rent .period {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem; letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.7; margin-left: 0.4rem;
+  }
+  .price-card-utilities {
+    display: inline-block;
+    margin-top: 0.8rem;
+    padding: 0.35rem 0.7rem;
+    background: rgba(111, 191, 115, 0.1);
+    border: 1px solid rgba(111, 191, 115, 0.25);
+    color: #6fbf73;
+    font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+    font-weight: 500;
+  }
+  .price-card-divider {
+    height: 1px; background: rgba(232,213,196,0.1);
+    margin: 1.8rem 0;
+  }
+  .price-card-specs {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1.5rem 1rem; margin-bottom: 1.8rem;
+  }
+  .spec-line { display: flex; flex-direction: column; }
+  .spec-line-label {
+    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    opacity: 0.4; margin-bottom: 0.2rem;
+  }
+  .spec-line-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; color: var(--accent); font-weight: 400;
+  }
+  .price-card-actions {
+    display: flex; flex-direction: column; gap: 0.6rem;
+  }
+  .btn-primary {
+    display: inline-block; text-align: center;
+    padding: 1rem 1.5rem;
+    background: var(--cream); color: var(--deep-green);
+    text-decoration: none; border: none; cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem; font-weight: 500;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(232,213,196,0.2);
+    background: var(--cream-white);
+  }
+  .btn-ghost {
+    display: inline-block; text-align: center;
+    padding: 1rem 1.5rem;
+    background: transparent;
+    border: 1px solid rgba(232,213,196,0.25);
+    color: var(--cream); text-decoration: none;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem; font-weight: 500;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .btn-ghost:hover {
+    border-color: rgba(232,213,196,0.5);
+    background: rgba(232,213,196,0.05);
+  }
+  .price-card-trust {
+    margin-top: 1.5rem; padding-top: 1.5rem;
+    border-top: 1px solid rgba(232,213,196,0.08);
+    font-size: 0.78rem; opacity: 0.55; line-height: 1.6;
+    display: flex; align-items: flex-start; gap: 0.7rem;
+  }
+  .price-card-trust svg {
+    width: 18px; height: 18px; stroke: var(--accent);
+    fill: none; stroke-width: 1.5; flex-shrink: 0; margin-top: 1px;
+  }
+
+  /* INQUIRY FORM */
+  .inquiry-section {
+    padding: 6rem 4rem;
+    background: var(--green-mid);
+    border-top: 1px solid rgba(232,213,196,0.06);
+  }
+  .inquiry-grid {
+    display: grid; grid-template-columns: 1fr 1.2fr;
+    gap: 5rem; align-items: start;
+    margin-top: 3rem;
+  }
+  .inquiry-left p { font-size: 1.05rem; line-height: 1.8; opacity: 0.6; margin-bottom: 1.5rem; }
+  .inquiry-features { list-style: none; margin-top: 2rem; }
+  .inquiry-features li {
+    display: flex; align-items: flex-start; gap: 0.8rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.92rem; opacity: 0.75; line-height: 1.6;
+  }
+  .inquiry-features svg {
+    width: 18px; height: 18px;
+    stroke: var(--accent); fill: none;
+    stroke-width: 1.5; flex-shrink: 0; margin-top: 3px;
+  }
+  .section-heading {
+    font-family: 'Cormorant Garamond', serif; font-weight: 300;
+    font-size: clamp(2rem, 3.5vw, 2.8rem); line-height: 1.15; max-width: 600px;
+  }
+  .section-heading em { font-style: italic; color: var(--accent); }
+  .divider { width: 60px; height: 1px; background: var(--accent); opacity: 0.4; margin: 2rem 0; }
+  .inquiry-form { display: flex; flex-direction: column; gap: 1.2rem; }
+  .form-section {
+    padding: 1.5rem 0 0.3rem;
+    border-top: 1px solid rgba(232,213,196,0.08);
+  }
+  .form-section:first-of-type { border-top: none; padding-top: 0; }
+  .form-section-header {
+    display: flex; align-items: baseline; gap: 0.8rem;
+    margin-bottom: 1.2rem;
+  }
+  .form-section-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; color: var(--accent);
+    font-weight: 400;
+  }
+  .form-section-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase;
+    font-weight: 500; opacity: 0.85;
+  }
+  .form-note {
+    padding: 1rem 1.2rem;
+    background: rgba(201,168,124,0.06);
+    border-left: 2px solid var(--accent);
+    font-size: 0.82rem; line-height: 1.6;
+    opacity: 0.7;
+  }
+  .form-note strong { color: var(--accent); font-weight: 500; opacity: 1; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.2rem; }
+  .form-field { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-field label {
+    font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+    opacity: 0.45; font-weight: 400;
+  }
+  .form-field label .required { color: var(--accent); }
+  .form-field input, .form-field textarea, .form-field select {
+    background: rgba(232,213,196,0.04);
+    border: 1px solid rgba(232,213,196,0.12);
+    color: var(--cream); font-family: 'Outfit', sans-serif;
+    font-size: 0.92rem; font-weight: 300;
+    padding: 0.85rem 1rem;
+    outline: none;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .form-field input:focus, .form-field textarea:focus, .form-field select:focus {
+    border-color: rgba(201,168,124,0.4);
+    background: rgba(232,213,196,0.07);
+  }
+  .form-field input::placeholder, .form-field textarea::placeholder {
+    color: rgba(232,213,196,0.25);
+  }
+  .form-field textarea { min-height: 110px; resize: vertical; }
+  .form-field select {
+    appearance: none; cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23e8d5c4' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+  }
+  .form-field select option { background: var(--deep-green); color: var(--cream); }
+  .form-checkbox-group { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .form-checkbox {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.85rem; opacity: 0.7; cursor: pointer;
+    user-select: none;
+  }
+  .form-checkbox input[type="checkbox"] {
+    width: 16px; height: 16px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .form-privacy {
+    font-size: 0.68rem; opacity: 0.3; text-align: center;
+    margin-top: 0.8rem; letter-spacing: 0.05em; line-height: 1.5;
+  }
+
+  footer {
+    padding: 3rem 4rem;
+    border-top: 1px solid rgba(232,213,196,0.06);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.75rem; opacity: 0.35; letter-spacing: 0.1em;
+  }
+  footer a { color: var(--cream); text-decoration: none; }
+  .footer-left { display: flex; align-items: center; gap: 0.8rem; }
+
+  @media (max-width: 1024px) {
+    .listing-detail { grid-template-columns: 1fr; gap: 3rem; }
+    .price-card { position: static; }
+    .gallery { height: 460px; }
+    .inquiry-grid { grid-template-columns: 1fr; gap: 3rem; }
+  }
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 2rem; }
+    nav.scrolled { padding: 1rem 2rem; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .page-header { padding: 7rem 2rem 1.5rem; }
+    .gallery-section { padding: 1.5rem 2rem 0; }
+    .gallery {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 220px 130px 130px;
+      height: auto;
+    }
+    .gallery-item-1 { grid-row: 1; grid-column: span 2; }
+    .gallery-item-2 { grid-row: 2; grid-column: 1; }
+    .gallery-item-3 { grid-row: 2; grid-column: 2; }
+    .gallery-item-4 { grid-row: 3; grid-column: 1; }
+    .gallery-item-5 { grid-row: 3; grid-column: 2; }
+    .listing-detail { padding: 3rem 2rem; }
+    .inquiry-section { padding: 4rem 2rem; }
+    .amenities-grid { grid-template-columns: 1fr; }
+    .listing-meta { gap: 1rem; }
+    .form-row, .form-row-3 { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; padding-bottom: 5rem; }
+    .lightbox-prev { left: 0.5rem; }
+    .lightbox-next { right: 0.5rem; }
+    .lightbox-close { top: 1rem; right: 1rem; }
+  }
+</style>
+</head>
+<style>
+  .catalog { padding: 9rem 4rem 5rem; }
+  .catalog-head { margin-bottom: 3rem; }
+  .catalog-grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem; }
+  .rcard { display:flex; flex-direction:column; border:1px solid rgba(232,213,196,0.1); background:rgba(232,213,196,0.02); text-decoration:none; color:var(--cream); transition:border-color .3s, transform .3s; overflow:hidden; }
+  .rcard:hover { border-color:rgba(201,168,124,0.35); transform:translateY(-4px); }
+  .rcard-photo { aspect-ratio:16/10; overflow:hidden; background:var(--green-mid); position:relative; }
+  .rcard-photo img { width:100%; height:100%; object-fit:cover; transition:transform .6s cubic-bezier(0.16,1,0.3,1); }
+  .rcard:hover .rcard-photo img { transform:scale(1.04); }
+  .rcard-ph { width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .rcard-ph svg { width:80px; opacity:0.12; }
+  .rcard-ph span { font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; opacity:0.3; margin-top:0.6rem; }
+  .rcard-badge { position:absolute; top:1rem; left:1rem; padding:0.4rem 0.8rem; background:rgba(26,58,53,0.92); backdrop-filter:blur(8px); font-size:0.62rem; letter-spacing:0.18em; text-transform:uppercase; font-weight:500; display:flex; align-items:center; gap:0.4rem; }
+  .rcard-badge .dot { width:6px; height:6px; border-radius:50%; }
+  .ba .dot { background:#6fbf73; } .ba { color:#6fbf73; }
+  .bs .dot { background:var(--accent); } .bs { color:var(--accent); }
+  .rcard-rent { position:absolute; bottom:1rem; right:1rem; padding:0.5rem 0.9rem; background:rgba(26,58,53,0.92); backdrop-filter:blur(8px); font-family:'Cormorant Garamond',serif; color:var(--accent); }
+  .rcard-rent .p { font-size:1.4rem; } .rcard-rent .per { font-family:'Outfit',sans-serif; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; opacity:0.7; margin-left:0.2rem; }
+  .rcard-body { padding:1.5rem 1.7rem 1.8rem; display:flex; flex-direction:column; flex:1; }
+  .rcard-title { font-family:'Cormorant Garamond',serif; font-size:1.5rem; line-height:1.2; margin-bottom:0.3rem; }
+  .rcard-loc { font-size:0.78rem; opacity:0.5; margin-bottom:1.1rem; }
+  .rcard-specs { display:flex; gap:1.3rem; padding:0.9rem 0; border-top:1px solid rgba(232,213,196,0.08); border-bottom:1px solid rgba(232,213,196,0.08); margin-bottom:1.1rem; font-size:0.82rem; opacity:0.7; }
+  .rcard-desc { font-size:0.88rem; line-height:1.6; opacity:0.6; margin-bottom:1.3rem; }
+  .rcard-cta { margin-top:auto; font-size:0.72rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--accent); display:flex; align-items:center; gap:0.5rem; }
+  @media (max-width:768px){ .catalog{padding:7rem 2rem 3rem;} .catalog-grid{grid-template-columns:1fr;} }
+</style>
+
+<body>
+<!-- NAV -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo">
+    <svg viewBox="0 0 350 200" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="90" height="200" fill="#e8d5c4"/>
+      <path d="M 90 0 L 90 200 C 170 200 200 155 200 100 C 200 45 170 0 90 0 Z" fill="#e8d5c4"/>
+      <path d="M 200 0 L 350 0 L 260 100 L 350 200 L 200 200 Z" fill="#e8d5c4"/>
+      <line x1="200" y1="0" x2="260" y2="100" stroke="#1a3a35" stroke-width="1" opacity="0.3"/>
+      <line x1="200" y1="200" x2="260" y2="100" stroke="#1a3a35" stroke-width="1" opacity="0.3"/>
+    </svg>
+    <div class="nav-logo-text">DREKO<span>Builds &amp; Property Management</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="rentals.html" style="opacity:1;">Rentals</a></li>
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="index.html#why">Why Dreko</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html#services">Services</a>
+  <a href="rentals.html">Rentals</a>
+  <a href="projects.html">Projects</a>
+  <a href="index.html#why">Why Dreko</a>
+  <a href="index.html#contact">Contact</a>
+</div>
+
+
+<section class="catalog">
+  <div class="catalog-head">
+    <p class="section-eyebrow reveal" style="font-size:0.72rem;letter-spacing:0.3em;text-transform:uppercase;opacity:0.4;margin-bottom:1rem;">Available Rentals</p>
+    <h1 class="listing-title reveal reveal-delay-1" style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(2.5rem,5vw,4rem);line-height:1.05;">Find your <em style="font-style:italic;color:var(--accent);">next home.</em></h1>
+    <div class="divider reveal reveal-delay-2" style="width:60px;height:1px;background:var(--accent);opacity:0.4;margin:2rem 0;"></div>
+    <p class="reveal reveal-delay-2" style="font-size:1.05rem;line-height:1.7;max-width:640px;opacity:0.6;">Premium units across Toronto, York Region, and Simcoe County — every property professionally managed, well-maintained, and move-in ready.</p>
+  </div>
+
+  <div class="catalog-grid">
+    <a class="rcard reveal" href="rental-garden-suite.html">
+      <div class="rcard-photo">
+        <img src="gs_hero.jpg" alt="Detached garden suite open-concept kitchen and living">
+        <div class="rcard-badge ba"><span class="dot"></span>Available Now</div>
+        <div class="rcard-rent"><span class="p">$2,300</span><span class="per">/mo</span></div>
+      </div>
+      <div class="rcard-body">
+        <div class="rcard-title">Brand New Detached Garden Suite</div>
+        <div class="rcard-loc">Innisfil · Simcoe County</div>
+        <div class="rcard-specs"><span>2 bed</span><span>1 bath</span><span>700 sq ft</span><span>2 parking</span></div>
+        <div class="rcard-desc">Never-lived-in detached suite with private entrance, sage kitchen, butcher block counters, 3×3 tiled shower, private yard. Utilities included.</div>
+        <div class="rcard-cta">View Details →</div>
+      </div>
+    </a>
+
+    <a class="rcard reveal reveal-delay-1" href="rental-triplex-upper.html">
+      <div class="rcard-photo">
+        <img src="tk_hero.jpg" alt="Open-concept kitchen with quartz backsplash and stainless appliances">
+        <div class="rcard-badge bs"><span class="dot"></span>Available Aug 1</div>
+        <div class="rcard-rent"><span class="p">$2,200</span><span class="per">/mo</span></div>
+      </div>
+      <div class="rcard-body">
+        <div class="rcard-title">Bright Upper-Level Unit</div>
+        <div class="rcard-loc">Innisfil Triplex · Simcoe County</div>
+        <div class="rcard-specs"><span>2 bed</span><span>4-pc bath</span><span>1,000 sq ft</span><span>1 parking</span></div>
+        <div class="rcard-desc">Spacious upper unit with hardwood floors, quartz counters &amp; backsplash, stainless appliances, double vanity, high ceilings, private storage. Utilities included.</div>
+        <div class="rcard-cta">View Details →</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-left">
+    <svg viewBox="0 0 350 200" xmlns="http://www.w3.org/2000/svg" style="height: 22px; width: auto;">
+      <rect x="0" y="0" width="90" height="200" fill="#e8d5c4"/>
+      <path d="M 90 0 L 90 200 C 170 200 200 155 200 100 C 200 45 170 0 90 0 Z" fill="#e8d5c4"/>
+      <path d="M 200 0 L 350 0 L 260 100 L 350 200 L 200 200 Z" fill="#e8d5c4"/>
+    </svg>
+    <span>&copy; 2026 Dreko Contracting Ltd. All rights reserved.</span>
+  </div>
+  <span>Custom Builds. Garden Suites. Done Right.</span>
+</footer>
+<script>
+  const nav=document.getElementById('nav');
+  window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>60);});
+  const h=document.getElementById('hamburger'),m=document.getElementById('mobileMenu');
+  if(h&&m){h.addEventListener('click',()=>{h.classList.toggle('active');m.classList.toggle('open');document.body.style.overflow=m.classList.contains('open')?'hidden':'';});m.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{h.classList.remove('active');m.classList.remove('open');document.body.style.overflow='';}));}
+  if('IntersectionObserver' in window){document.documentElement.classList.add('reveal-enabled');const o=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:0.05});document.querySelectorAll('.reveal').forEach(el=>o.observe(el));setTimeout(()=>{document.querySelectorAll('.reveal:not(.visible)').forEach(el=>el.classList.add('visible'));},2000);}
+</script>
+</body>
+</html>
