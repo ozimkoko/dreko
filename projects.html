@@ -1,709 +1,168 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en-CA">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DREKO — Active Projects | Aurora Pool & Dream Garage + Keswick Waterfront</title>
-<meta name="description" content="Current Dreko projects: Garden suite construction in Aurora and a lakefront seasonal rental transformation in Keswick on Lake Simcoe.">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --deep-green: #1a3a35;
-    --green-mid: #24524b;
-    --green-light: #2d6b62;
-    --cream: #e8d5c4;
-    --cream-soft: #f2e8de;
-    --cream-white: #faf5f0;
-    --warm-gray: #8a7e74;
-    --accent: #c9a87c;
-    --text-dark: #0f1f1c;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; font-size: 16px; }
-  body {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 300;
-    color: var(--cream);
-    background: var(--deep-green);
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-  }
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    opacity: 0.03;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-size: 256px 256px;
-    pointer-events: none;
-    z-index: 9999;
-  }
-  .reveal {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .reveal-enabled .reveal {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  .reveal-enabled .reveal.visible { opacity: 1; transform: translateY(0); }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-  .reveal-delay-1 { transition-delay: 0.12s; }
-  .reveal-delay-2 { transition-delay: 0.24s; }
-  .reveal-delay-3 { transition-delay: 0.36s; }
-  .reveal-delay-4 { transition-delay: 0.48s; }
-
-  /* NAV */
-  nav {
-    position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-    padding: 1.5rem 4rem;
-    display: flex; justify-content: space-between; align-items: center;
-    transition: background 0.4s, padding 0.4s;
-  }
-  nav.scrolled {
-    background: rgba(26,58,53,0.95);
-    backdrop-filter: blur(24px);
-    padding: 1rem 4rem;
-    box-shadow: 0 1px 0 rgba(232,213,196,0.06);
-  }
-  .nav-logo { display: flex; align-items: center; gap: 0.8rem; text-decoration: none; }
-  .nav-logo svg { height: 38px; width: auto; transition: height 0.4s; }
-  nav.scrolled .nav-logo svg { height: 32px; }
-  .nav-logo-text { font-weight: 600; font-size: 1.4rem; letter-spacing: 0.25em; color: var(--cream); }
-  .nav-logo-text span { font-weight: 300; opacity: 0.6; font-size: 0.7rem; letter-spacing: 0.3em; display: block; margin-top: 2px; }
-  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-  .nav-links a {
-    color: var(--cream); text-decoration: none; font-size: 0.82rem;
-    letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.7;
-    font-weight: 400; position: relative; transition: opacity 0.3s;
-  }
-  .nav-links a::after {
-    content: ''; position: absolute; bottom: -4px; left: 0;
-    width: 0; height: 1px; background: var(--accent);
-    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .nav-links a:hover { opacity: 1; }
-  .nav-links a:hover::after { width: 100%; }
-  .hamburger {
-    display: none; flex-direction: column; gap: 5px; cursor: pointer;
-    padding: 8px; z-index: 1001; background: none; border: none;
-  }
-  .hamburger span { display: block; width: 24px; height: 1.5px; background: var(--cream); transition: transform 0.3s, opacity 0.3s; }
-  .hamburger.active span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-  .hamburger.active span:nth-child(2) { opacity: 0; }
-  .hamburger.active span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-  .mobile-menu {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(26,58,53,0.98); backdrop-filter: blur(30px); z-index: 999;
-    flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
-    opacity: 0; transition: opacity 0.4s;
-  }
-  .mobile-menu.open { display: flex; opacity: 1; }
-  .mobile-menu a {
-    color: var(--cream); text-decoration: none; font-family: 'Cormorant Garamond', serif;
-    font-size: 2rem; font-weight: 300; letter-spacing: 0.1em; opacity: 0.8; transition: opacity 0.3s, color 0.3s;
-  }
-  .mobile-menu a:hover { opacity: 1; color: var(--accent); }
-
-  /* PAGE HEADER */
-  .page-header {
-    padding: 10rem 4rem 5rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .page-header-watermark {
-    position: absolute; right: -5%; top: 50%; transform: translateY(-50%);
-    width: 45vw; max-width: 500px; opacity: 0.02; pointer-events: none;
-  }
-  .breadcrumb {
-    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
-    opacity: 0.35; margin-bottom: 1.5rem; font-weight: 400;
-  }
-  .breadcrumb a { color: var(--cream); text-decoration: none; transition: opacity 0.3s; }
-  .breadcrumb a:hover { opacity: 0.8; }
-  .page-title {
-    font-family: 'Cormorant Garamond', serif; font-weight: 300;
-    font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1; max-width: 800px;
-  }
-  .page-title em { font-style: italic; color: var(--accent); }
-  .page-intro {
-    margin-top: 1.5rem; font-size: 1.1rem; line-height: 1.7;
-    max-width: 600px; opacity: 0.55;
-  }
-  .divider { width: 60px; height: 1px; background: var(--accent); opacity: 0.4; margin: 2rem 0; }
-
-  /* PROJECT SECTION */
-  .project-section {
-    padding: 6rem 4rem;
-    border-top: 1px solid rgba(232,213,196,0.06);
-  }
-  .project-section:nth-child(odd) { background: var(--green-mid); }
-
-  .project-header {
-    display: flex; justify-content: space-between; align-items: flex-start;
-    margin-bottom: 3rem; flex-wrap: wrap; gap: 2rem;
-  }
-  .project-header-left { max-width: 600px; }
-  .project-eyebrow {
-    font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
-    opacity: 0.4; margin-bottom: 0.75rem; font-weight: 400;
-  }
-  .project-name {
-    font-family: 'Cormorant Garamond', serif; font-weight: 300;
-    font-size: clamp(1.8rem, 3.5vw, 2.8rem); line-height: 1.15;
-  }
-  .project-name em { font-style: italic; color: var(--accent); }
-  .project-location {
-    margin-top: 0.5rem; font-size: 0.85rem; opacity: 0.45;
-    letter-spacing: 0.05em;
-  }
-
-  .project-status {
-    display: flex; align-items: center; gap: 0.6rem;
-    padding: 0.6rem 1.2rem;
-    border: 1px solid rgba(201,168,124,0.25);
-    font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
-    font-weight: 400; white-space: nowrap; height: fit-content;
-  }
-  .status-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
-  }
-  .status-dot.upcoming { background: var(--accent); }
-  .status-dot.active { background: #6fbf73; animation: pulse 2s ease-in-out infinite; }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-
-  /* Project photo gallery */
-  .project-gallery {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
-  }
-  .project-gallery-main {
-    width: 100%;
-    aspect-ratio: 16/10;
-    object-fit: cover;
-    border: 1px solid rgba(232,213,196,0.08);
-  }
-  .project-gallery-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
-  }
-  .project-gallery-thumb {
-    width: 100%;
-    aspect-ratio: 16/10;
-    object-fit: cover;
-    border: 1px solid rgba(232,213,196,0.08);
-    opacity: 0.85;
-    transition: opacity 0.3s;
-  }
-  .project-gallery-thumb:hover { opacity: 1; }
-  .gallery-label {
-    font-size: 0.65rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    opacity: 0.3;
-    margin-top: 0.75rem;
-    font-weight: 400;
-    text-align: center;
-  }
-
-  /* Project content grid */
-  .project-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: start;
-  }
-  .project-visual {
-    aspect-ratio: 4/3;
-    background: rgba(232,213,196,0.03);
-    border: 1px solid rgba(232,213,196,0.08);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    position: relative; overflow: hidden;
-  }
-  .project-visual-label {
-    font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase;
-    opacity: 0.25; font-weight: 400;
-  }
-  .project-visual svg { width: 80px; opacity: 0.08; margin-top: 1rem; }
-
-  .project-description p {
-    font-size: 1rem; line-height: 1.8; opacity: 0.6; margin-bottom: 1.5rem;
-  }
-
-  /* Specs grid */
-  .project-specs {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem; margin-top: 2.5rem;
-    padding-top: 2.5rem;
-    border-top: 1px solid rgba(232,213,196,0.08);
-  }
-  .spec-item { display: flex; flex-direction: column; }
-  .spec-label {
-    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
-    opacity: 0.3; margin-bottom: 0.3rem; font-weight: 400;
-  }
-  .spec-value {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.15rem; font-weight: 400; color: var(--accent);
-  }
-
-  /* Scope list */
-  .scope-section { margin-top: 3rem; }
-  .scope-title {
-    font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase;
-    opacity: 0.35; margin-bottom: 1.5rem; font-weight: 400;
-  }
-  .scope-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 0.8rem;
-  }
-  .scope-item {
-    display: flex; align-items: center; gap: 0.8rem;
-    padding: 0.7rem 1rem;
-    border: 1px solid rgba(232,213,196,0.06);
-    font-size: 0.85rem; opacity: 0.55;
-    transition: border-color 0.3s, opacity 0.3s;
-  }
-  .scope-item:hover { border-color: rgba(201,168,124,0.2); opacity: 0.8; }
-  .scope-item svg {
-    width: 16px; height: 16px; stroke: var(--accent); fill: none;
-    stroke-width: 1.5; min-width: 16px;
-  }
-
-  /* Activities section for Keswick */
-  .activities-section {
-    margin-top: 3rem;
-    padding-top: 2.5rem;
-    border-top: 1px solid rgba(232,213,196,0.08);
-  }
-  .activities-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 1.2rem; margin-top: 1.5rem;
-  }
-  .activity-card {
-    padding: 1.5rem;
-    border: 1px solid rgba(232,213,196,0.06);
-    text-align: center;
-    transition: border-color 0.3s, transform 0.3s;
-  }
-  .activity-card:hover {
-    border-color: rgba(201,168,124,0.2);
-    transform: translateY(-3px);
-  }
-  .activity-icon { font-size: 1.5rem; margin-bottom: 0.75rem; display: block; }
-  .activity-card h4 {
-    font-family: 'Outfit', sans-serif; font-weight: 500;
-    font-size: 0.82rem; letter-spacing: 0.05em; margin-bottom: 0.3rem;
-  }
-  .activity-card p {
-    font-size: 0.75rem; opacity: 0.4; line-height: 1.5;
-  }
-  .activity-season {
-    display: inline-block; margin-top: 0.5rem;
-    font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
-    padding: 0.2rem 0.5rem;
-    border: 1px solid rgba(201,168,124,0.2);
-    color: var(--accent); opacity: 0.7;
-  }
-
-  /* CTA */
-  .page-cta {
-    padding: 8rem 4rem;
-    text-align: center;
-    position: relative;
-  }
-  .page-cta::before {
-    content: ''; position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(201,168,124,0.06), transparent 70%);
-    pointer-events: none;
-  }
-  .page-cta .page-title { margin: 0 auto 1.5rem; text-align: center; max-width: 600px; }
-  .page-cta p { max-width: 480px; margin: 0 auto 2.5rem; font-size: 1rem; line-height: 1.7; opacity: 0.5; }
-  .btn-primary {
-    display: inline-block; padding: 1rem 2.5rem;
-    background: var(--cream); color: var(--deep-green);
-    text-decoration: none; font-size: 0.82rem; font-weight: 500;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    transition: transform 0.3s, box-shadow 0.3s;
-  }
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(232,213,196,0.2);
-  }
-
-  /* FOOTER */
-  footer {
-    padding: 3rem 4rem;
-    border-top: 1px solid rgba(232,213,196,0.06);
-    display: flex; justify-content: space-between; align-items: center;
-    font-size: 0.75rem; opacity: 0.35; letter-spacing: 0.1em;
-  }
-  footer a { color: var(--cream); text-decoration: none; }
-  .footer-left { display: flex; align-items: center; gap: 0.8rem; }
-
-  /* RESPONSIVE */
-  @media (max-width: 1024px) {
-    .project-content { grid-template-columns: 1fr; gap: 3rem; }
-    .project-specs { grid-template-columns: repeat(2, 1fr); }
-    .activities-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (max-width: 768px) {
-    nav { padding: 1.2rem 2rem; }
-    nav.scrolled { padding: 1rem 2rem; }
-    .nav-links { display: none; }
-    .hamburger { display: flex; }
-    .page-header { padding: 8rem 2rem 3rem; }
-    .project-section { padding: 4rem 2rem; }
-    .project-header { flex-direction: column; }
-    .scope-grid { grid-template-columns: 1fr; }
-    .activities-grid { grid-template-columns: 1fr; }
-    .page-cta { padding: 5rem 2rem; }
-    footer { flex-direction: column; gap: 1rem; text-align: center; }
-  }
-</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Work | DREKO</title>
+<meta name="description" content="Selected Dreko projects: a multiplex conversion and garden suite in Churchill, a lakefront rebuild on Cook’s Bay in Keswick, and a coach house in design in Aurora.">
+<link rel="canonical" href="https://dreko.vercel.app/projects">
+<meta name="theme-color" content="#1a3a35">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="DREKO">
+<meta property="og:title" content="Work | DREKO">
+<meta property="og:description" content="Selected Dreko projects: a multiplex conversion and garden suite in Churchill, a lakefront rebuild on Cook’s Bay in Keswick, and a coach house in design in Aurora.">
+<meta property="og:url" content="https://dreko.vercel.app/projects">
+<meta property="og:image" content="https://dreko.vercel.app/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Archivo+Black&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&display=swap">
+<link rel="stylesheet" href="site.css">
+<script src="site.js" defer></script>
 </head>
 <body>
-
-<!-- NAV -->
-<nav id="nav">
-  <a href="index.html" class="nav-logo">
-    <svg viewBox="0 0 350 200" xmlns="http://www.w3.org/2000/svg">
-      <rect x="0" y="0" width="90" height="200" fill="#e8d5c4"/>
-      <path d="M 90 0 L 90 200 C 170 200 200 155 200 100 C 200 45 170 0 90 0 Z" fill="#e8d5c4"/>
-      <path d="M 200 0 L 350 0 L 260 100 L 350 200 L 200 200 Z" fill="#e8d5c4"/>
-      <line x1="200" y1="0" x2="260" y2="100" stroke="#1a3a35" stroke-width="1" opacity="0.3"/>
-      <line x1="200" y1="200" x2="260" y2="100" stroke="#1a3a35" stroke-width="1" opacity="0.3"/>
-    </svg>
-    <div class="nav-logo-text">DREKO<span>Builds &amp; Property Management</span></div>
-  </a>
-  <ul class="nav-links">
-    <li><a href="index.html#services">Services</a></li>
-    <li><a href="rentals.html">Rentals</a></li>
-    <li><a href="projects.html" style="opacity:1;">Projects</a></li>
-    
-    <li><a href="index.html#contact">Contact</a></li>
-  </ul>
-  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
-</nav>
-<div class="mobile-menu" id="mobileMenu">
-  <a href="index.html#services">Services</a>
-  <a href="rentals.html">Rentals</a>
-  <a href="projects.html">Projects</a>
-  
-  <a href="index.html#contact">Contact</a>
-</div>
-
-<!-- PAGE HEADER -->
-<header class="page-header">
-  <svg class="page-header-watermark" viewBox="0 0 350 200" xmlns="http://www.w3.org/2000/svg">
-    <rect x="0" y="0" width="90" height="200" fill="#e8d5c4"/>
-    <path d="M 90 0 L 90 200 C 170 200 200 155 200 100 C 200 45 170 0 90 0 Z" fill="#e8d5c4"/>
-    <path d="M 200 0 L 350 0 L 260 100 L 350 200 L 200 200 Z" fill="#e8d5c4"/>
-  </svg>
-  <div class="breadcrumb reveal"><a href="index.html">Home</a> &nbsp;/&nbsp; Active Projects</div>
-  <h1 class="page-title reveal reveal-delay-1">Active <em>Projects</em></h1>
-  <div class="divider reveal reveal-delay-2"></div>
-  <p class="page-intro reveal reveal-delay-3">A look at what we're currently building and managing. Every project reflects our end-to-end approach — from design and permitting through construction and tenant placement.</p>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav">
+  <div class="wrap nav__inner">
+    <a class="brand" href="index.html" aria-label="DREKO, home"><svg viewBox="0 0 350 200" aria-hidden="true" focusable="false"><g fill="currentColor"><rect width="90" height="200"/><path d="M90 0v200c80 0 110-45 110-100S170 0 90 0z"/><path d="M200 0h150l-90 100 90 100H200z"/></g><path d="M200 0l60 100-60 100" fill="none" stroke="#112925" stroke-width="3" opacity=".55"/></svg><span><span class="brand__word">DREKO</span><span class="brand__sub">Multiplexes &amp; Custom Homes</span></span></a>
+    <nav aria-label="Primary">
+      <ul class="nav__links"><li><a href="projects.html" aria-current="page">Work</a></li><li><a href="index.html#services">Services</a></li><li><a href="index.html#contact">Contact</a></li><li><a class="btn btn--cream nav__cta" href="index.html#contact">Begin a project</a></li></ul>
+    </nav>
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
 </header>
-
-<!-- PROJECT 1: AURORA GARDEN SUITE -->
-<section class="project-section">
-  <div class="project-header reveal">
-    <div class="project-header-left">
-      <div class="project-eyebrow">Dreko Contracting Ltd.</div>
-      <h2 class="project-name">29 Wells St — <em>Community Pool &amp; Dream Garage</em></h2>
-      <div class="project-location">Aurora, Ontario &nbsp;·&nbsp; York Region</div>
-    </div>
-    <div class="project-status">
-      <span class="status-dot upcoming"></span>
-      August 15, 2026 Start
-    </div>
-  </div>
-
-  <div class="project-content">
-    <div class="project-gallery reveal">
-      <img src="aurora_front.jpg" alt="29 Wells St Aurora - Front view of bungalow" class="project-gallery-main">
-      <div class="project-gallery-row">
-        <img src="aurora_backyard.jpg" alt="29 Wells St Aurora - Backyard and deck" class="project-gallery-thumb">
-        <img src="aurora_build_location.jpg" alt="29 Wells St Aurora - Proposed garden suite build location" class="project-gallery-thumb">
-      </div>
-      <div class="gallery-label">Before — Current Property &amp; Pool / Garage Build Location</div>
-    </div>
-    <div class="project-description reveal reveal-delay-1">
-      <p>This project has evolved. Originally planned as a detached garden suite, 29 Wells St is now becoming something the whole neighbourhood can enjoy: a purpose-built swimming pool designed to host community swim classes — from children's lessons to older adult aquatic programs — paired with a fully outfitted "Mechanic's Dream Garage."</p>
-      <p>The pool build focuses on accessibility and year-round usability, with safe entry design suited for both young swimmers and seniors. The garage is being designed as a serious workspace — the kind of shop every hands-on owner wishes they had: hoist-ready, high ceilings, ample power, and organized storage for tools and equipment.</p>
-      <p>Dreko is handling every phase: design, permit application with the Town of Aurora, and construction with in-house trades.</p>
-
-      <div class="project-specs">
-        <div class="spec-item">
-          <span class="spec-label">Type</span>
-          <span class="spec-value">Pool + Custom Garage</span>
-        </div>
-        <div class="spec-item">
-          <span class="spec-label">Pool Use</span>
-          <span class="spec-value">Community Swim Classes</span>
-        </div>
-        <div class="spec-item">
-          <span class="spec-label">Programs</span>
-          <span class="spec-value">Children &amp; Older Adults</span>
-        </div>
-        <div class="spec-item">
-          <span class="spec-label">Garage</span>
-          <span class="spec-value">Mechanic&#39;s Dream Shop</span>
-        </div>
-        <div class="spec-item">
-          <span class="spec-label">Target Start</span>
-          <span class="spec-value">August 15, 2026</span>
-        </div>
-        <div class="spec-item">
-          <span class="spec-label">Scope</span>
-          <span class="spec-value">Full Build</span>
-        </div>
-        <div class="spec-item">
-          <span class="spec-label">Management</span>
-          <span class="spec-value">Dreko PM</span>
-        </div>
-      </div>
+<div class="menu" id="menu" aria-hidden="true">
+  <ul>
+    <li><a class="menu__link" href="projects.html">Work</a></li>
+    <li><a class="menu__link" href="index.html#services">Services</a></li>
+    <li><a class="menu__link" href="index.html#process">Process</a></li>
+    <li><a class="menu__link" href="index.html#contact">Begin a project</a></li>
+  </ul>
+  <div class="menu__foot"><a href="tel:+16479825358">(647) 982-5358</a><a href="mailto:info@dreko.ca">info@dreko.ca</a><span>Toronto, York Region and Simcoe County</span></div>
+</div>
+<main id="main">
+<header class="page-head">
+  <div class="wrap">
+    <p class="crumbs"><a href="index.html">Home</a> / Work</p>
+    <div class="page-head__row">
+      <h1>Work</h1>
+      <p class="lede">Selected projects, from house conversions to new construction, planned and built by Dreko.</p>
     </div>
   </div>
-
-  <div class="scope-section reveal">
-    <div class="scope-title">Scope of Work</div>
-    <div class="scope-grid">
-      <div class="scope-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Pool design &amp; engineering</div>
-      <div class="scope-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Municipal permits &amp; pool enclosure compliance</div>
-      <div class="scope-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Excavation &amp; pool construction</div>
-      <div class="scope-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Accessible entry for all-ages swim programs</div>
-      <div class="scope-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Garage build — hoist-ready, high ceilings</div>
-      <div class="scope-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Electrical service upgrade for shop equipment</div>
-      <div class="scope-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Fencing, decking &amp; safety systems</div>
-      <div class="scope-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Landscaping &amp; site restoration</div>
+</header>
+<section class="band band--stone" id="churchill" aria-labelledby="churchill-t">
+  <div class="wrap">
+    <div class="project-head">
+      <div style="grid-column:1/span 8"><span class="meta">Churchill, Innisfil</span><h2 id="churchill-t">One house, rebuilt as four homes</h2></div>
+      <div><span class="status">Complete</span></div>
+    </div>
+<div class="gallery" data-gallery aria-label="Photographs of one house, rebuilt as four homes">
+  <button type="button" class="g-lead" data-src="gs_hero.jpg" aria-label="Open photo 1 of 7"><img src="gs_hero.jpg" alt="Garden suite kitchen, completed 2026" decoding="async"></button>
+  <button type="button" class="" data-src="tk_hero.jpg" aria-label="Open photo 2 of 7"><img src="tk_hero.jpg" alt="Upper residence living and dining room" loading="lazy" decoding="async"></button>
+  <button type="button" class="" data-src="tk_bath2.jpg" aria-label="Open photo 3 of 7"><img src="tk_bath2.jpg" alt="Upper residence bath with freestanding tub" loading="lazy" decoding="async"></button>
+  <button type="button" class="" data-src="gs_new_2.jpg" aria-label="Open photo 4 of 7"><img src="gs_new_2.jpg" alt="Garden suite tiled shower" loading="lazy" decoding="async"></button>
+  <button type="button" class="" data-src="tk_bed1.jpg" aria-label="Open photo 5 of 7"><img src="tk_bed1.jpg" alt="Upper residence bedroom" loading="lazy" decoding="async"><span class="gallery__count">View all 7</span></button>
+  <button type="button" class="g-more" data-src="gs_kitchen.jpg" aria-label="Open photo 6 of 7"><img src="gs_kitchen.jpg" alt="Garden suite kitchen" loading="lazy" decoding="async"></button>
+  <button type="button" class="g-more" data-src="tk_living.jpg" aria-label="Open photo 7 of 7"><img src="tk_living.jpg" alt="Upper residence living room" loading="lazy" decoding="async"></button>
+</div>
+    <div class="split project-body">
+      <div class="split__a prose"><p>Purchased as a single-family house, the property was converted by Dreko in 2024 into three self-contained residences, each finished with hardwood floors, tiled baths and its own carpentry details.</p><p>Between September 2025 and March 2026 we added a detached garden suite at the rear of the lot, built with our long-standing trade partners. The result is four self-contained homes on what was a single-family lot, and the clearest example of how we work: one team, from the first drawing to the final inspection.</p></div>
+      <div class="split__b"><dl class="titleblock"><div><dt>Location</dt><dd>Churchill, Innisfil</dd></div><div><dt>Built</dt><dd>2024 to 2026</dd></div><div class="full"><dt>Before</dt><dd>Single-family house</dd></div><div class="full"><dt>After</dt><dd>Triplex and detached garden suite</dd></div><div><dt>Homes</dt><dd>4</dd></div><div><dt>Delivery</dt><dd>Design-build</dd></div></dl></div>
     </div>
   </div>
 </section>
-
-<!-- PROJECT 2: KESWICK WATERFRONT -->
-<section class="project-section">
-  <div class="project-header reveal">
-    <div class="project-header-left">
-      <div class="project-eyebrow">Dreko Contracting + Property Management</div>
-      <h2 class="project-name">586 Lake Dr S — <em>Waterfront Seasonal Rental</em></h2>
-      <div class="project-location">Keswick (Georgina), Ontario &nbsp;·&nbsp; Cook's Bay, Lake Simcoe</div>
+<section class="band band--stone-2" id="keswick" aria-labelledby="keswick-t">
+  <div class="wrap">
+    <div class="project-head">
+      <div style="grid-column:1/span 8"><span class="meta">Keswick, on Cook’s Bay</span><h2 id="keswick-t">A lakefront cottage, being rebuilt for four seasons</h2></div>
+      <div><span class="status">In progress</span></div>
     </div>
-    <div class="project-status">
-      <span class="status-dot active"></span>
-      In Progress · August 15, 2026 Completion
-    </div>
-  </div>
-
-  <div class="project-content">
-    <div class="project-gallery reveal">
-      <img src="kw_framing.jpg" alt="586 Lake Dr S - Structural framing and sheathing in progress at sunset" class="project-gallery-main">
-      <div class="project-gallery-row">
-        <img src="kw_kitchen_view.jpg" alt="586 Lake Dr S - Framed boathouse kitchen opening with massive window view over Lake Simcoe" class="project-gallery-thumb">
-        <img src="kw_lakeside_build.jpg" alt="586 Lake Dr S - Roof extension over new poured concrete patio at the shoreline" class="project-gallery-thumb">
-      </div>
-      <div class="project-gallery-row">
-        <img src="kw_roof_sunset.jpg" alt="586 Lake Dr S - New roof sheathing at sunset over Cook&#39;s Bay" class="project-gallery-thumb">
-        <img src="keswick_summer.jpg" alt="586 Lake Dr S - Before: original property" class="project-gallery-thumb">
-      </div>
-      <div class="gallery-label">Build in Progress — Framing, Boathouse Kitchen &amp; Roof Extension · Summer 2026</div>
-    </div>
-    <div class="project-description reveal reveal-delay-1">
-      <p>A full-scope renovation and seasonal rental conversion of a lakefront property sitting just 20 feet from a 75-foot shoreline on Cook's Bay, Lake Simcoe. The vision: transform a traditional 3-bedroom, 2-bathroom cottage-style home into an attractive four-season destination rental — complete with a bunkie, a converted boat house, and a log cabin-style guest suite.</p>
-      <p>The renovation leans into a cozy, rustic lakehouse aesthetic: natural wood trims throughout, butcher block countertops, a new fireplace, restored original wood lap siding finished with traditional pine tar, and new windows oriented toward the water. The front and rear decks will be extended to create generous outdoor living space overlooking the lake.</p>
-      <p>The existing 400 sq ft stucco-faced garage is being converted into a log cabin-style bunkie, and the original boat house has received a full structural upgrade and is being transformed into a large kitchen with massive windows framing an uninterrupted view of the lake. A new roof extension now stretches over a generous poured-concrete backyard patio — covered outdoor living right at the water&#39;s edge. A 35-foot wooden dock, Tesla/EV charging stations, updated landscaping, and full safety code upgrades round out the project.</p>
-      <p>Dreko Property Management handles all seasonal bookings, guest turnover, and ongoing maintenance — critical for a lakefront property that takes year-round environmental punishment from Lake Simcoe's winds, ice, and weather cycles.</p>
-
-      <div class="project-specs">
-        <div class="spec-item">
-          <span class="spec-label">Main House</span>
-          <span class="spec-value">3 Bed / 2 Bath</span>
-        </div>
-        <div class="spec-item">
-          <span class="spec-label">Bunkie</span>
-          <span class="spec-value">400 sq ft · Sleeps 4</span>
-        </div>
-        <div class="spec-item">
-          <span class="spec-label">Garage Conversion</span>
-          <span class="spec-value">Log Cabin Bunkie</span>
-        </div>
-        <div class="spec-item">
-          <span class="spec-label">Boat House</span>
-          <span class="spec-value">Lakeview Kitchen</span>
-        </div>
-        <div class="spec-item">
-          <span class="spec-label">Patio</span>
-          <span class="spec-value">Covered Concrete · Roof Ext.</span>
-        </div>
-        <div class="spec-item">
-          <span class="spec-label">Shoreline</span>
-          <span class="spec-value">75 ft · 20 ft setback</span>
-        </div>
-        <div class="spec-item">
-          <span class="spec-label">Dock</span>
-          <span class="spec-value">35 ft Wooden</span>
-        </div>
-        <div class="spec-item">
-          <span class="spec-label">Rental Type</span>
-          <span class="spec-value">Seasonal / Short-Term</span>
-        </div>
-        <div class="spec-item">
-          <span class="spec-label">Status</span>
-          <span class="spec-value">In Progress</span>
-        </div>
-        <div class="spec-item">
-          <span class="spec-label">Target Completion</span>
-          <span class="spec-value">August 15, 2026</span>
-        </div>
-        <div class="spec-item">
-          <span class="spec-label">Management</span>
-          <span class="spec-value">Dreko PM</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="scope-section reveal">
-    <div class="scope-title">Scope of Work — Contracting</div>
-    <div class="scope-grid">
-      <div class="scope-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Restore original wood lap siding + pine tar finish</div>
-      <div class="scope-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Natural wood trim installation throughout</div>
-      <div class="scope-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Kitchen renovation — rustic vibe, butcher block counters</div>
-      <div class="scope-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Fireplace installation</div>
-      <div class="scope-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Extend front &amp; rear decks</div>
-      <div class="scope-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>New water-facing windows</div>
-      <div class="scope-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Garage → log cabin bunkie conversion</div>
-      <div class="scope-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Boat house structural upgrade → lakeview kitchen</div>
-      <div class="scope-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Roof extension over poured concrete patio</div>
-      <div class="scope-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>35 ft wooden dock build</div>
-      <div class="scope-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Entertainment space buildout</div>
-      <div class="scope-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Tesla &amp; EV charger installation</div>
-      <div class="scope-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Safety code retrofit &amp; compliance</div>
-      <div class="scope-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Landscaping update</div>
-      <div class="scope-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Seasonal rental staging &amp; outfitting</div>
-    </div>
-  </div>
-
-  <!-- Activities -->
-  <div class="activities-section reveal">
-    <div class="scope-title">Guest Experience — Lake Simcoe Activities</div>
-    <div class="activities-grid">
-      <div class="activity-card">
-        <span class="activity-icon">🎣</span>
-        <h4>Ice Fishing</h4>
-        <p>Cook's Bay is one of Ontario's top perch fishing spots. Heated hut rentals available steps away.</p>
-        <span class="activity-season">Winter</span>
-      </div>
-      <div class="activity-card">
-        <span class="activity-icon">🚤</span>
-        <h4>Boating &amp; Water Sports</h4>
-        <p>Kayaking, paddleboarding, jet skiing, and wakeboarding on Lake Simcoe's calm southern bays.</p>
-        <span class="activity-season">Summer</span>
-      </div>
-      <div class="activity-card">
-        <span class="activity-icon">🏖️</span>
-        <h4>Beaches &amp; Swimming</h4>
-        <p>Willow Beach and multiple public beaches within minutes. Shallow, family-friendly waters.</p>
-        <span class="activity-season">Summer</span>
-      </div>
-      <div class="activity-card">
-        <span class="activity-icon">🐟</span>
-        <h4>Open-Water Fishing</h4>
-        <p>Smallmouth bass, lake trout, and jumbo perch. Private dock access right from the property.</p>
-        <span class="activity-season">Spring — Fall</span>
-      </div>
-      <div class="activity-card">
-        <span class="activity-icon">⛷️</span>
-        <h4>Snow Tubing &amp; Skiing</h4>
-        <p>The ROC in Keswick offers tubing lanes, a terrain park, and night skiing under LEDs.</p>
-        <span class="activity-season">Winter</span>
-      </div>
-      <div class="activity-card">
-        <span class="activity-icon">🚴</span>
-        <h4>Cycling &amp; Trails</h4>
-        <p>Lakeside trails and nearby Hardwood Ski & Bike with 80km of singletrack.</p>
-        <span class="activity-season">Year-Round</span>
-      </div>
-      <div class="activity-card">
-        <span class="activity-icon">🌅</span>
-        <h4>Sunsets &amp; Stargazing</h4>
-        <p>West-facing shoreline delivers stunning Lake Simcoe sunsets from the deck and dock.</p>
-        <span class="activity-season">Year-Round</span>
-      </div>
-      <div class="activity-card">
-        <span class="activity-icon">🔌</span>
-        <h4>EV Charging</h4>
-        <p>Tesla and universal EV chargers on-site. Drive up from Toronto guilt-free.</p>
-        <span class="activity-season">Year-Round</span>
-      </div>
+<div class="gallery" data-gallery aria-label="Photographs of a lakefront cottage, being rebuilt for four seasons">
+  <button type="button" class="g-lead" data-src="kw_patio_finished.jpg" aria-label="Open photo 1 of 8"><img src="kw_patio_finished.jpg" alt="The cottage today: white vertical siding and a covered concrete patio on timber posts, with sliding doors facing the lake" decoding="async"></button>
+  <button type="button" class="" data-src="kw_exterior_finished.jpg" aria-label="Open photo 2 of 8"><img src="kw_exterior_finished.jpg" alt="The driveway side, with new windows, soffit lighting and a gravel court lined with cedars" loading="lazy" decoding="async"></button>
+  <button type="button" class="" data-src="kw_vaulted_ceiling.jpg" aria-label="Open photo 3 of 8"><img src="kw_vaulted_ceiling.jpg" alt="The boathouse kitchen under a vaulted, wood-panelled ceiling with exposed timber beams, looking out to Cook’s Bay" loading="lazy" decoding="async"></button>
+  <button type="button" class="" data-src="kw_shiplap_interior.jpg" aria-label="Open photo 4 of 8"><img src="kw_shiplap_interior.jpg" alt="Living space finished in painted shiplap, with pot lights and sliding doors to the lake" loading="lazy" decoding="async"></button>
+  <button type="button" class="" data-src="kw_roof_sunset.jpg" aria-label="Open photo 5 of 8"><img src="kw_roof_sunset.jpg" alt="New roof sheathing at sunset over Cook’s Bay" loading="lazy" decoding="async"><span class="gallery__count">View all 8</span></button>
+  <button type="button" class="g-more" data-src="kw_kitchen_view.jpg" aria-label="Open photo 6 of 8"><img src="kw_kitchen_view.jpg" alt="The old boathouse reframed as a kitchen facing the lake" loading="lazy" decoding="async"></button>
+  <button type="button" class="g-more" data-src="kw_lakeside_build.jpg" aria-label="Open photo 7 of 8"><img src="kw_lakeside_build.jpg" alt="Roof extension over the new concrete patio at the shoreline" loading="lazy" decoding="async"></button>
+  <button type="button" class="g-more" data-src="kw_framing.jpg" aria-label="Open photo 8 of 8"><img src="kw_framing.jpg" alt="Sheathing and framing at golden hour" loading="lazy" decoding="async"></button>
+</div>
+    <div class="split project-body">
+      <div class="split__a prose"><p>A cottage twenty feet from a 75-foot shoreline on Cook’s Bay, which Dreko is rebuilding for year-round use as a seasonal rental. The original boathouse has been structurally reinforced and reframed as a kitchen with large windows facing the lake, and a new roof extension now shelters a poured concrete patio at the water’s edge.</p><p>The exterior is now complete: a new roof, white vertical siding, new windows and doors, and a gravel court lined with cedars. Inside, the boathouse kitchen sits under a vaulted, wood-panelled ceiling with exposed timber beams, and the living spaces are finished in painted shiplap. Interior finishing is under way.</p></div>
+      <div class="split__b"><dl class="titleblock"><div><dt>Location</dt><dd>Keswick, Lake Simcoe</dd></div><div><dt>Status</dt><dd>In progress</dd></div><div class="full"><dt>Boathouse</dt><dd>Lakeview kitchen under a vaulted beam ceiling</dd></div><div class="full"><dt>Outdoors</dt><dd>Covered concrete patio</dd></div><div><dt>Shoreline</dt><dd>75 ft</dd></div><div><dt>Use</dt><dd>Seasonal rental</dd></div></dl></div>
     </div>
   </div>
 </section>
-
-<!-- CTA -->
-<section class="page-cta">
-  <div class="project-eyebrow reveal">Have a Property?</div>
-  <h2 class="page-title reveal reveal-delay-1">Let's talk about <em>yours.</em></h2>
-  <p class="reveal reveal-delay-2">Whether you're looking to build a garden suite, convert an existing property, or need professional management for your rental — we'd love to hear from you.</p>
-  <div class="reveal reveal-delay-3">
-    <a href="index.html#contact" class="btn-primary">Get in Touch</a>
+<section class="band band--stone" id="aurora" aria-labelledby="aurora-t">
+  <div class="wrap">
+    <div class="project-head">
+      <div style="grid-column:1/span 8"><span class="meta">Aurora</span><h2 id="aurora-t">A modern-farmhouse coach house and lap pool</h2></div>
+      <div><span class="status">In design</span></div>
+    </div>
+<div class="gallery gallery--three" data-gallery aria-label="Photographs of a modern-farmhouse coach house and lap pool">
+  <button type="button" class="g-lead" data-src="wells_render_hero.jpg" aria-label="Open photo 1 of 5"><img src="wells_render_hero.jpg" alt="3D rendering: the modern-farmhouse coach house, with board-and-batten siding, a standing seam roof and a glazed gable" decoding="async"></button>
+  <button type="button" class="" data-src="wells_render_pool.jpg" aria-label="Open photo 2 of 5"><img src="wells_render_pool.jpg" alt="3D rendering: the lap pool, looking back to the glass garden door of the pool room" loading="lazy" decoding="async"></button>
+  <button type="button" class="" data-src="wells_render_drive.jpg" aria-label="Open photo 3 of 5"><img src="wells_render_drive.jpg" alt="3D rendering: the approach along the driveway to the garage" loading="lazy" decoding="async"><span class="gallery__count">View all 5</span></button>
+  <button type="button" class="g-more" data-src="wells_render_street.jpg" aria-label="Open photo 4 of 5"><img src="wells_render_street.jpg" alt="3D rendering: the coach house behind the existing bungalow, seen from the street" loading="lazy" decoding="async"></button>
+  <button type="button" class="g-more" data-src="wells_render_aerial.jpg" aria-label="Open photo 5 of 5"><img src="wells_render_aerial.jpg" alt="3D rendering: the whole lot from above, with the coach house and lap pool" loading="lazy" decoding="async"></button>
+</div>
+    <div class="split project-body">
+      <div class="split__a prose"><p>On a deep lot a short walk from Aurora GO, Dreko is designing a two-storey, 24 by 40 ft modern-farmhouse building behind the existing bungalow: a garage and pool room at grade, with a two-bedroom, two-bath suite above. A lap pool runs along the rear garden.</p><p>These images are renderings from Dreko’s own 3D site model, built from the zoning drawings so the building, setbacks and neighbouring homes sit where they will in reality. The design is still being refined.</p></div>
+      <div class="split__b"><dl class="titleblock"><div><dt>Location</dt><dd>Aurora</dd></div><div><dt>Status</dt><dd>In design</dd></div><div><dt>Footprint</dt><dd>24 by 40 ft</dd></div><div><dt>Height</dt><dd>Two storeys</dd></div><div class="full"><dt>Programme</dt><dd>Garage and pool room, two-bedroom suite above</dd></div><div class="full"><dt>Garden</dt><dd>Lap pool</dd></div></dl></div>
+    </div>
   </div>
 </section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-left">
-    <svg viewBox="0 0 350 200" xmlns="http://www.w3.org/2000/svg" style="height: 22px; width: auto;">
-      <rect x="0" y="0" width="90" height="200" fill="#e8d5c4"/>
-      <path d="M 90 0 L 90 200 C 170 200 200 155 200 100 C 200 45 170 0 90 0 Z" fill="#e8d5c4"/>
-      <path d="M 200 0 L 350 0 L 260 100 L 350 200 L 200 200 Z" fill="#e8d5c4"/>
-    </svg>
-    <span>&copy; 2026 Dreko Contracting Ltd. All rights reserved.</span>
+<section class="band band--forest" aria-labelledby="cta-t">
+  <div class="wrap res-head" style="margin-bottom:0">
+    <h2 class="title" id="cta-t">Have a property in mind?</h2>
+    <div>
+      <p>Whether it is a multiplex, a custom home or a lot you are still evaluating, the first conversation is free and without obligation.</p>
+      <div class="btn-row"><a class="btn btn--cream" href="index.html#contact">Begin a project</a><a class="btn btn--ghost" href="tel:+16479825358">Call (647) 982-5358</a></div>
+    </div>
   </div>
-  <span>Custom Builds. Garden Suites. Done Right.</span>
+</section>
+</main>
+<dialog class="lightbox" id="lightbox" aria-label="Photo viewer">
+  <div class="lightbox__bar"><span class="lightbox__count"></span><button class="lb-btn" type="button" data-lb="close" aria-label="Close photo viewer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>
+  <div class="lightbox__stage"><img alt=""></div>
+  <p class="lightbox__caption"></p>
+  <button class="lb-btn lightbox__nav lightbox__nav--prev" type="button" data-lb="prev" aria-label="Previous photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button class="lb-btn lightbox__nav lightbox__nav--next" type="button" data-lb="next" aria-label="Next photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5l7 7-7 7"/></svg></button>
+</dialog>
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <a class="brand" href="index.html" aria-label="DREKO, home"><svg viewBox="0 0 350 200" aria-hidden="true" focusable="false"><g fill="currentColor"><rect width="90" height="200"/><path d="M90 0v200c80 0 110-45 110-100S170 0 90 0z"/><path d="M200 0h150l-90 100 90 100H200z"/></g><path d="M200 0l60 100-60 100" fill="none" stroke="#112925" stroke-width="3" opacity=".55"/></svg><span><span class="brand__word">DREKO</span><span class="brand__sub">Multiplexes &amp; Custom Homes</span></span></a>
+        <p class="footer__tag"><span>We plan it.</span><span>We build it.</span><span>Done right.</span></p>
+      </div>
+      <div class="footer__col footer__col--nav">
+        <h2>Explore</h2>
+        <ul>
+          <li><a href="projects.html">Work</a></li>
+          <li><a href="index.html#services">Services</a></li>
+          <li><a href="index.html#process">Process</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer__col footer__col--contact">
+        <h2>Contact</h2>
+        <ul>
+          <li><a href="tel:+16479825358">(647) 982-5358</a></li>
+          <li><a href="mailto:info@dreko.ca">info@dreko.ca</a></li>
+          <li>Toronto, York Region and Simcoe County</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__base">
+      <span>&copy; 2026 Dreko Contracting Ltd.</span>
+      <span>Licensed contractor. Fully insured, WSIB and HST registered.</span>
+    </div>
+  </div>
 </footer>
-
-<script>
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 60); });
-
-  const hamburger = document.getElementById('hamburger');
-  const mobileMenu = document.getElementById('mobileMenu');
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    mobileMenu.classList.toggle('open');
-    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
-  });
-  mobileMenu.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
-      hamburger.classList.remove('active');
-      mobileMenu.classList.remove('open');
-      document.body.style.overflow = '';
-    });
-  });
-
-  if ('IntersectionObserver' in window) {
-    document.documentElement.classList.add('reveal-enabled');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-    }, { threshold: 0.05, rootMargin: '0px 0px 0px 0px' });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    setTimeout(() => {
-      document.querySelectorAll('.reveal:not(.visible)').forEach(el => el.classList.add('visible'));
-    }, 2000);
-  }
-</script>
+<div class="mbar"><a href="tel:+16479825358">Call</a><a href="index.html#contact">Begin a project</a></div>
 </body>
 </html>

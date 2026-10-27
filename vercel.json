@@ -1,0 +1,11 @@
+{
+  "cleanUrls": true,
+  "redirects": [
+    { "source": "/rentals", "destination": "/projects", "permanent": false },
+    { "source": "/rental-garden-suite", "destination": "/projects", "permanent": false },
+    { "source": "/rental-triplex-upper", "destination": "/projects", "permanent": false }
+  ],
+  "headers": [
+    { "source": "/(.*)\\.(jpg|svg|css|js)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }] }
+  ]
+}
